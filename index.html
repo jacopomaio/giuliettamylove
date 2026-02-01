@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Per Giulia ❤️</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+      
+      .question-mark {
+      position: absolute;
+      top: -50px;
+      color: #d81b60; /* Un rosa scuro/rosso */
+      font-size: 2rem;
+      z-index: 1; /* Portiamolo sopra lo sfondo, ma sotto il box se il box ha z-index 2 */
+      .question-mark {
+    position: absolute;
+    top: -50px;
+    color: #d81b60; /* Un rosa scuro/rosso */
+    font-size: 2rem;
+    z-index: -4; /* Portiamolo sopra lo sfondo, ma sotto il box se il box ha z-index 2 */
+    user-select: none;
+    pointer-events: none; /* Così non blocca i click sui tasti */
+    animation: rainDown linear forwards;
+}
+      user-select: none;
+      pointer-events: none; /* Così non blocca i click sui tasti */
+      animation: rainDown linear forwards;
+  }
+
+  @keyframes rainDown {
+0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 0;
+}
+10% { opacity: 1; }
+90% { opacity: 1; }
+100% {
+    transform: translateY(110vh) rotate(360deg);
+    opacity: 0;
+}
+}
+
+        body {
+
+            background-color: #ffc0cb; /* Rosa */
+            font-family: 'Press+Start+2P', cursive;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            text-align: center;
+            color: #d81b60;
+        }
+
+        #game-container {
+          position: relative; /* Necessario per far funzionare lo z-index */
+    z-index: 10;
+            border: 8px solid #d81b60;
+            padding: 40px;
+            background: #fff0f5;
+            box-shadow: 10px 10px 0px #d81b60;
+            max-width: 80%;
+        }
+
+        h1 { font-size: 1.2rem; line-height: 1.6; }
+
+        .buttons {
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        button {
+            font-family: 'Press+Start+2P', cursive;
+            padding: 15px 25px;
+            font-size: 1rem;
+            cursor: pointer;
+            border: 4px solid #000;
+            background: #fff;
+            box-shadow: 4px 4px 0px #000;
+        }
+
+        button:active {
+            box-shadow: 0px 0px 0px #000;
+            transform: translate(4px, 4px);
+        }
+
+        #yes-btn { background-color: #4caf50; color: white; }
+        #no-btn { background-color: #f44336; color: white; }
+
+        /* Effetti finali */
+        .heart {
+            position: absolute;
+            color: #ff0000;
+            font-size: 2rem;
+            animation: float 3s linear infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+        }
+
+        #sunset-img {
+            width: 300px;
+            height: auto;
+            border: 10px solid white;
+            box-shadow: 0 0 20px rgba(0,0,0,0.3);
+            margin-top: 20px;
+            z-index: 10;
+        }
+    </style>
+</head>
+<body>
+
+<div id="game-container">
+    <div id="content">
+        <h1 id="question">Giulia, vuoi essere la mia Valentina?</h1>
+        <div class="buttons">
+            <button id="yes-btn" onclick="handleYes()">SÌ</button>
+            <button id="no-btn" onclick="handleNo()">NO</button>
+        </div>
+    </div>
+</div>
+ <img src="goma-cat.gif" style="width: 300px; margin-top: 20px; margin-right: 68px; image-rendering: pixelated;">
+
+
+<script>
+  // 1. Definiamo l'audio fuori dalle funzioni così è pronto subito
+const music = new Audio('die.mp3');
+music.preload = "auto";
+let questionInterval = setInterval(createQuestionMark, 300);
+
+function createQuestionMark() {
+    const qm = document.createElement('div');
+    qm.classList.add('question-mark');
+    qm.innerHTML = '?';
+
+    // Posizione orizzontale casuale (da 0 a 100% della larghezza)
+    qm.style.left = Math.random() * 100 + "vw";
+
+    // Durata del volo casuale tra 3 e 6 secondi
+    const duration = Math.random() * 3 + 3;
+    qm.style.animationDuration = duration + "s";
+qm.style.fontSize = (Math.random() * 20 + 20) + "px";
+    document.body.appendChild(qm);
+
+    // Rimuove l'elemento dopo che ha finito l'animazione per non appesantire il PC
+    setTimeout(() => {
+        qm.remove();
+    }, duration * 1000);
+}
+let stage = 0;
+
+function handleYes() {
+    const question = document.getElementById('question');
+
+    if (stage === 1) {
+        stage = 0;
+        question.innerText = "Sei sicura del voto? 🤬";
+    } else {
+        showVictory();
+    }
+}
+
+function handleNo() {
+    alert("eddai pls seria");
+    location.reload();
+}
+
+function showVictory() {
+    // TENTATIVO RIPRODUZIONE: Chrome lo permette perché avviene dopo un click
+    music.play().catch(e => console.log("Errore audio:", e));
+    clearInterval(questionInterval); // Blocca la creazione di nuovi "?"
+
+        // Rimuove i "?" ancora visibili
+        document.querySelectorAll('.question-mark').forEach(el => el.remove());
+    // Cambiamo il contenuto della pagina
+    document.body.innerHTML = `
+        <h1 style="z-index: 11; position: relative; color: white; text-shadow: 2px 2px #000; padding: 20px;">
+            SAPEVO CHE AVRESTI DETTO DI SÌ❤️
+        </h1>
+        <img id="sunset-img" src="noi.png" alt="Tramonto">
+        <h1 style="z-index: 11; position: relative; color: white; text-shadow: 2px 2px #000;">TI AMO PICCOLINA ❤️</h1>
+        <h1 style="z-index: 11; position: relative; color: white; text-shadow: 2px 2px #000;">SAREMO MOLTO FELICI INSIEME ❤️</h1>
+    `;
+
+    document.body.style.backgroundColor = "#ff69b4";
+    setInterval(createHeart, 100);
+}
+
+function createHeart() {
+    const heart = document.createElement('div');
+    heart.classList.add('heart');
+    heart.innerHTML = '❤️';
+    heart.style.left = Math.random() * 100 + 'vw';
+    heart.style.animationDuration = (Math.random() * 2 + 3) + 's';
+    document.body.appendChild(heart);
+    setTimeout(() => { heart.remove(); }, 4000);
+}
+</script>
+
+</body>
+</html>
